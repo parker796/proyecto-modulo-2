@@ -1,4 +1,4 @@
-## Analisis de identifiacion de beas y uso de inyeccion de dependencas
+## Analisis de identificacion de beans y uso de inyeccion de dependencas
 
 Los beans que identifique fueron dos una de clase Persona y otro clase de Component_Product y las utilize igual para realizar una inyeccion de dependencia en Spring
 
