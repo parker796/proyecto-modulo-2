@@ -1,38 +1,48 @@
 package com.example.TiendaComputadoras.Service;
 
-import com.example.TiendaComputadoras.Repository.InterDell;
+import com.example.TiendaComputadoras.Repository.InterDellRepository;
 import com.example.TiendaComputadoras.model.Dell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
-public abstract class ServiceDell implements  InterDell {
+public class ServiceDell{
     //en lugar de implementar toda la interfaz mejor hacemos una inyeccion de repositorio al servicio
-    private InterDell interDell;
-
+    private InterDellRepository interDell;
     @Autowired //este no es necesario
-    public ServiceDell(InterDell interDell) {
+    public ServiceDell(InterDellRepository interDell) {
         this.interDell = interDell;
     }
 
-/*
-    @Override
-    public Dell validar() {
-        return interDell.validar().;
+    public List<Dell> obtenerDells() {
+        return interDell.findAll();
     }
-    //hacemos la validacion del update
-        Optional<Dell> equipodell = interDell.findById(data.getId());
-        if (equipodell.isPresent()) {
-            Dell dell = equipodell.get();
-            dell.setDisco(data.getDisco());
-            dell.setProcesador(data.getProcesador());
-            dell.setMemoriaRam(data.getMemoriaRam());
-            interDell.save(dell);
-            return "Se actualizo correctamente el registro";
-        } else {
-            return "Error en el articulo que desea modificar";
-        }
-    }*/
+
+    public List<Dell> obtenerDell(Long id) {
+        //aqui era un metodo solo Dell pero se casteo
+        // todo service dell por una lista porque es lo que regresa por id
+        return (List<Dell>) interDell.findAllById(Collections.singleton(id));
+    }
+
+    public Dell dellCrear(Dell data){ //viene un objeto json y lo convierte a una clase java
+        return interDell.save(data);
+    }
+    public Dell dellModificar(Dell data) {
+        Dell updatedDell = interDell.findById(data.getId()).orElse(null);
+        updatedDell.setMemoriaRam(data.getMemoriaRam());
+        updatedDell.setProcesador(data.getProcesador());
+        updatedDell.setDisco(data.getDisco());
+        return interDell.save(updatedDell);
+    }
+
+    public void deleteById(Long id) {
+        interDell.deleteById(id);
+    }
+
+
 }
