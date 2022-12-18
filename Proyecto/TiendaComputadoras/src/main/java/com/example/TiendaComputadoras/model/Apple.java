@@ -2,8 +2,16 @@ package com.example.TiendaComputadoras.model;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 //estas clases son las que vamos a utilizar en base de datos
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "Apple")
 public class Apple {
@@ -17,6 +25,8 @@ public class Apple {
     @Column(name = "disco duro", nullable = false, length = 50)
     private String disco;
 
+    /*
+    //lo sustituimos por lombok
     public void setId(Long id) {
         this.id = id;
     }
@@ -48,4 +58,6 @@ public class Apple {
     public String getProcesador() {
         return procesador;
     }
+
+     */
 }

@@ -1,16 +1,16 @@
 package com.example.TiendaComputadoras.controller;
 
+import com.example.TiendaComputadoras.DTO.DTOApple;
+import com.example.TiendaComputadoras.DTO.DTODell;
 import com.example.TiendaComputadoras.Service.INServApple;
-import com.example.TiendaComputadoras.Service.ServiceApple;
 import com.example.TiendaComputadoras.model.Apple;
-import com.example.TiendaComputadoras.model.CrearApple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedList;
 import java.util.List;
 
 @RestController
+@RequestMapping("/Apple")
 public class AppleController {
    private INServApple serviceApple;
 
@@ -19,27 +19,34 @@ public class AppleController {
       this.serviceApple = serviceApple;
     }
 
-    @GetMapping("/obtenerApples")
-    public List<Apple> obtenerApples() {
-        return serviceApple.obtenerApples();
+    //@GetMapping("/obtenerApples")
+    @GetMapping
+    //public List<Apple> obtenerApples()
+    public List<DTOApple> obtenerApples(){
+        return serviceApple.findAll();
     }
 
-    @GetMapping("/obtenerApple/{id}")
-    public List<Apple> obtenerCurso(@PathVariable Long id) {
-        return serviceApple.obtenerApple(id);
+    @GetMapping("/{id}")
+    public List<DTOApple> obtenerCurso(@PathVariable Long id) {
+
+       return serviceApple.findAllById(id);
     }
 
-    @PostMapping("/appleCrear")
-    public Apple appleCrear(@RequestBody Apple data){ //viene un objeto json y lo convierte a una clase java
-        return serviceApple.appleCrear(data);
+   // @PostMapping("/appleCrear")
+    @PostMapping
+    public DTOApple appleCrear(@RequestBody DTOApple data){ //viene un objeto json y lo convierte a una clase java
+
+       return serviceApple.save(data);
     }
 
-    @PutMapping("/appleModificar")
-    public String appleModificar(@RequestBody Apple data){
-        return "se actualizo correctamente" + serviceApple.appleModificar(data);
+   // @PutMapping("/appleModificar") //igual el id viene en el cuerpo del mensaje a actualizar
+    @PutMapping
+    public String appleModificar(@RequestBody DTOApple data){
+        serviceApple.updateApple(data);
+        return "se actualizo correctamente";
     }
 
-    @DeleteMapping("/appleBorrar/{id}")
+    @DeleteMapping("/{id}")
     public String appleEliminar(@PathVariable Long id){
        serviceApple.appleEliminar(id);
        return "se elimino correctamente";
