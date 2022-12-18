@@ -22,33 +22,52 @@ public class ServiceApple implements INServApple{
 
     @Override
     public List<Apple> obtenerApples() {
-        logger.info("se obtuvo satisfactoriamente la peticion");
-        return interApple.findAll();
+        if(interApple.findAll().size()>0){
+            logger.info("Tenemos elementos en la BD de datos");
+             return interApple.findAll();}
+        else{
+            logger.warn("No tenemos elementos en la BD hay que agregar");
+            return null;
+        }
     }
     @Override
     public List<Apple> obtenerApple(Long id) {
         //aqui era un metodo solo Dell pero se casteo
         // todo service dell por una lista porque es lo que regresa por id
-        logger.info("se obtuvo satisfactoriamente la peticion");
-        return (List<Apple>) interApple.findAllById(Collections.singleton(id));
+        if(interApple.findAllById(Collections.singleton(id)).size()>0){
+            logger.info("Si encontramos el elemento");
+             return (List<Apple>) interApple.findAllById(Collections.singleton(id));}
+        else{
+            logger.warn("No se encontro el elemento");
+            return null;
+        }
     }
     @Override
     public Apple appleCrear(Apple data){ //viene un objeto json y lo convierte a una clase java
-        logger.info("se obtuvo satisfactoriamente la peticion");
+        logger.info("se creo el elemento");
         return interApple.save(data);
     }
     @Override
     public Apple appleModificar(Apple data) {
         Apple updatedApple = interApple.findById(data.getId()).orElse(null);
-        updatedApple.setMemoriaRam(data.getMemoriaRam());
-        updatedApple.setProcesador(data.getProcesador());
-        updatedApple.setDisco(data.getDisco());
-        logger.info("se obtuvo satisfactoriamente la peticion");
-        return interApple.save(updatedApple);
+        if(interApple.findById(data.getId()).isEmpty() == true) {
+            logger.warn("Elemento que deseas modificar ya no existe");
+            return null;
+        }else {
+            updatedApple.setMemoriaRam(data.getMemoriaRam());
+            updatedApple.setProcesador(data.getProcesador());
+            updatedApple.setDisco(data.getDisco());
+            logger.info("se actualizo correctamente");
+            return interApple.save(updatedApple);
+        }
     }
     @Override
     public void appleEliminar(Long id) {
-        logger.info("se obtuvo satisfactoriamente la peticion");
-        interApple.deleteById(id);
+        if(interApple.findAllById(Collections.singleton(id)).size()>0) {
+            logger.info("Se elimino correctamente");
+            interApple.deleteById(id);
+        }else{
+            logger.warn("No se encontro el elemento a eliminar");
+        }
     }
 }
