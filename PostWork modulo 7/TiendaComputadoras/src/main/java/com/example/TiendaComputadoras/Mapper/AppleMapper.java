@@ -8,5 +8,5 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface AppleMapper {
     DTOApple toDTO(Apple data);
-    DTOApple toEntity(DTOApple data);
+    Apple toEntity(DTOApple data);
 }

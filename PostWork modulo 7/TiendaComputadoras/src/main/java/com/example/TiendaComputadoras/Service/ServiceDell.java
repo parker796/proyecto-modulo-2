@@ -67,7 +67,7 @@ public class ServiceDell implements INServDell{
         Optional<Dell> result = interDell.findById(data.getId());
 
         if (result.isEmpty()) {
-            logger.warn("No existe curso");
+            logger.warn("No existe el equipo");
         }
 
         Dell updatedDell = result.get();

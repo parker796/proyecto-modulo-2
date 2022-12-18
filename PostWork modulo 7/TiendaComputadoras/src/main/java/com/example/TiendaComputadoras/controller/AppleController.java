@@ -1,5 +1,7 @@
 package com.example.TiendaComputadoras.controller;
 
+import com.example.TiendaComputadoras.DTO.DTOApple;
+import com.example.TiendaComputadoras.DTO.DTODell;
 import com.example.TiendaComputadoras.Service.INServApple;
 import com.example.TiendaComputadoras.model.Apple;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,25 +21,29 @@ public class AppleController {
 
     //@GetMapping("/obtenerApples")
     @GetMapping
-    public List<Apple> obtenerApples() {
-        return serviceApple.obtenerApples();
+    //public List<Apple> obtenerApples()
+    public List<DTOApple> obtenerApples(){
+        return serviceApple.findAll();
     }
 
     @GetMapping("/{id}")
-    public List<Apple> obtenerCurso(@PathVariable Long id) {
-        return serviceApple.obtenerApple(id);
+    public List<DTOApple> obtenerCurso(@PathVariable Long id) {
+
+       return serviceApple.findAllById(id);
     }
 
    // @PostMapping("/appleCrear")
     @PostMapping
-    public Apple appleCrear(@RequestBody Apple data){ //viene un objeto json y lo convierte a una clase java
-        return serviceApple.appleCrear(data);
+    public DTOApple appleCrear(@RequestBody DTOApple data){ //viene un objeto json y lo convierte a una clase java
+
+       return serviceApple.save(data);
     }
 
    // @PutMapping("/appleModificar") //igual el id viene en el cuerpo del mensaje a actualizar
     @PutMapping
-    public String appleModificar(@RequestBody Apple data){
-        return "se actualizo correctamente" + serviceApple.appleModificar(data);
+    public String appleModificar(@RequestBody DTOApple data){
+        serviceApple.updateApple(data);
+        return "se actualizo correctamente";
     }
 
     @DeleteMapping("/{id}")
