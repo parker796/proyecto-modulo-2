@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 @RequestMapping("/Dell")
 public class DellController {
@@ -42,14 +43,17 @@ public class DellController {
     //@PutMapping("/dellModificar") //yo en mi put no obtengo el id en url si no viene todo en el body el id
    @PutMapping
     //public String dellModificar(@RequestBody Dell data)
-    public String dellModificar(@RequestBody DTODell data){
+    public List<DTODell> dellModificar(@RequestBody DTODell data){
         serviceDell.updateDell(data);
-      return "actualizado correctamente ";
+      return serviceDell.findAll();//igual lo modifique para que no tuvieramos un warning y se pudiera
+       //ver la actualizacion en la tabla de angular  porque generaba un error porque no devuelve un json
     }
     @DeleteMapping("/{id}")
-    public String dellEliminar(@PathVariable Long id){
+    public List<DTODell> dellEliminar(@PathVariable Long id){
         serviceDell.deleteById(id);
-        return "se elimino correctamente ";
+        return serviceDell.findAll(); //esta parte la tenia como un string
+        //pero en el angular la respuesta la toma mal asi que lo modifique para que devuelva un la lista
+        //de objetos actualizada y se vea reflejada en la tabla de angular en la vista
     }
 
 
